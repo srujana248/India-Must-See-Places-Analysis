@@ -1,0 +1,185 @@
+
+Importing Dataset into Collab
+[ ]
+df = pd.read_csv('/content/drive/My Drive/Top Indian Places to Visit.csv')
+from google.colab import drive
+drive.mount('/content/drive')
+import pandas as pd
+
+# prompt: import topPlacesToVisit.csv and show sample of 5 rows
+
+# Read the CSV file into a DataFrame
+df = pd.read_csv('/content/drive/My Drive/Top Indian Places to Visit.csv')
+
+df = df.iloc[:, 1:]
+
+
+Data Visulization
+1. Histograms
+
+[ ]
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Read the dataset
+df = pd.read_csv('/content/drive/My Drive/Top Indian Places to Visit.csv')
+
+# Plot histogram
+plt.hist(df["time needed to visit in hrs"], bins=np.arange(0, df["time needed to visit in hrs"].max() + 1, 1))
+plt.title("Time Needed to Visit each Place")
+plt.xlabel("Time Needed to Visit (hours)")
+plt.ylabel("Number of Places")
+plt.show()
+
+
+
+
+2. Bar Chart
+
+[ ]
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+
+# Bar plots
+plt.figure(figsize=(10, 6))
+sns.countplot(x='Zone', data=df)
+plt.title('Distribution of Zones')
+plt.show()
+
+
+3. Scatter Plot
+
+[ ]
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+
+# Scatter plot
+plt.figure(figsize=(8, 6))
+sns.scatterplot(x='time needed to visit in hrs', y='Google review rating', data=df)
+plt.title('Scatter Plot of Time Needed to Visit vs Google Review Rating')
+plt.show()
+
+4. Column Chart
+
+[ ]
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Count the frequency of each unique value in the desired column
+column_frequency = df['Zone'].value_counts()
+
+# Plot the bar chart
+plt.figure(figsize=(10, 6))
+plt.bar(column_frequency.index, column_frequency.values)
+
+# Show the frequency in the plot
+for index, value in enumerate(column_frequency):
+    plt.text(index, value, str(value), ha='center', va='bottom')
+
+plt.xlabel('Zone')
+plt.ylabel('# of Places')
+plt.title('Number of Indian Places to Visit by Zone')
+
+plt.xticks(rotation=45)  # Rotate x-axis labels for better readability
+plt.tight_layout()  # Adjust layout to prevent clipping of labels
+plt.show()
+
+
+
+5. Pie Chart
+
+[ ]
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
+# Count the number of each type
+type_counts = df['Type'].value_counts()
+
+# Plotting a pie chart for type counts
+plt.figure(figsize=(10, 10))
+plt.pie(type_counts, labels=type_counts.index, autopct='%.2f%%', startangle=90)
+plt.title('Distribution of Place Types')
+plt.show()
+
+
+Machine Learning Techniques
+1. Linear Regression
+
+[ ]
+import pandas as pd
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+
+# Read the CSV file into a DataFrame
+df = pd.read_csv('/content/drive/My Drive/Top Indian Places to Visit.csv')
+
+# Define the dependent variable y and independent variable X
+y = df["Entrance Fee in INR"]
+X = df["Google review rating"]
+
+# Perform linear regression
+model = ols('y ~ X', data=df).fit()
+
+# Display the summary
+print(model.summary())
+
+
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       0.002
+Model:                            OLS   Adj. R-squared:                 -0.001
+Method:                 Least Squares   F-statistic:                    0.7619
+Date:                Sun, 05 May 2024   Prob (F-statistic):              0.383
+Time:                        23:57:38   Log-Likelihood:                -2499.5
+No. Observations:                 325   AIC:                             5003.
+Df Residuals:                     323   BIC:                             5011.
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+Intercept    536.5629    482.927      1.111      0.267    -413.517    1486.643
+X            -93.7894    107.448     -0.873      0.383    -305.176     117.597
+==============================================================================
+Omnibus:                      569.107   Durbin-Watson:                   1.985
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):           213726.973
+Skew:                          10.043   Prob(JB):                         0.00
+Kurtosis:                     127.014   Cond. No.                         77.3
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[ ]
+display(df.head())
+
+2. Decision Tree
+
+[ ]
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+import pandas as pd
+
+# Load the dataset
+df = pd.read_csv('/content/drive/My Drive/Top Indian Places to Visit.csv')
+
+# Define the independent variables (features) and the dependent variable (target)
+X = df[['Google review rating', 'Entrance Fee in INR', 'Number of google review in lakhs']]
+# Let's assume 'Significance' is the target variable for classification
+y = df['Significance']
+
+# Create and fit the decision tree classifier
+dtree = DecisionTreeClassifier(criterion='entropy', max_depth=3)
+model = dtree.fit(X, y)
+
+# Plot the decision tree
+import matplotlib.pyplot as plt
+plt.figure(figsize=(20, 10))
+plot_tree(model, filled=True, feature_names=X.columns, class_names=model.classes_, rounded=True)
+plt.show()
+
+
+Colab paid products - Cancel contracts here
